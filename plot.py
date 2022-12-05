@@ -54,7 +54,7 @@ fig = go.Figure(data=[
     )
 ])
 
-# colorspace
+# colorscale
 # One of the following named colorscales:
 # [‘aggrnyl’, ‘agsunset’, ‘algae’, ‘amp’, ‘armyrose’, ‘balance’,
 # ‘blackbody’, ‘bluered’, ‘blues’, ‘blugrn’, ‘bluyl’, ‘brbg’, ‘brwnyl’,
@@ -67,5 +67,23 @@ fig = go.Figure(data=[
 # ‘purpor’, ‘rainbow’, ‘rdbu’, ‘rdgy’, ‘rdpu’, ‘rdylbu’, ‘rdylgn’, ‘redor’, ‘reds’, ‘solar’,
 # ‘spectral’, ‘speed’, ‘sunset’, ‘sunsetdark’, ‘teal’, ‘tealgrn’, ‘tealrose’, ‘tempo’, ‘temps’,
 # ‘thermal’, ‘tropic’, ‘turbid’, ‘turbo’, ‘twilight’, ‘viridis’, ‘ylgn’, ‘ylgnbu’, ‘ylorbr’, ‘ylorrd’].
+
+
+fig.update_layout(
+    # set axis
+    scene = dict(
+        xaxis = dict(range=[0,12],),
+        yaxis = dict(range=[0,12],),
+        zaxis = dict(range=[0,12],),
+        xaxis_title='X AXIS TITLE',
+        yaxis_title='Y AXIS TITLE',
+        zaxis_title='Z AXIS TITLE',
+    ),
+    # width (optional)
+    # width=700,
+
+    # margin (optional)
+    # margin=dict(r=20, l=10, b=10, t=10)
+)
 
 fig.write_html("file.html", auto_open=True)
