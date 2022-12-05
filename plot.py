@@ -9,23 +9,33 @@ data_z = []
 databorder_x = []
 databorder_y = []
 databorder_z = []
-for z in numpy.arange(0, 10, 0.05):
-    for x in numpy.arange(0, 4, 0.05):
-        for y in numpy.arange(0, 4, 0.05):
-            if 0<=x<=2 and 0<=y<=x:
 
-                max_z = 9-(x**2)
-                delta_border = 0.4
-                if 0 <= z < max_z-delta_border:
-                    # data inside
-                    data_x.append(x)
-                    data_y.append(y)
-                    data_z.append(z)
-                elif max_z-delta_border <= z <= max_z:
-                    # data next to border
-                    databorder_x.append(x)
-                    databorder_y.append(y)
-                    databorder_z.append(z)
+# Create a 3D grid of (x, y, z) coordinates
+x, y, z = numpy.meshgrid(numpy.arange(0, 4, 0.03),
+                         numpy.arange(0, 4, 0.03),
+                         numpy.arange(0, 10, 0.03))
+
+# Select the elements of the grid that satisfy the given conditions
+indices = numpy.where((0 <= x) & (x <= 2) & (0 <= y) & (y <= x))
+x = x[indices]
+y = y[indices]
+z = z[indices]
+
+# Compute the maximum value of z for each (x, y) pair
+max_z = 9 - (x**2)
+delta_border = 0.4
+
+# Select the data inside the region
+inside = numpy.where((0 <= z) & (z < max_z - delta_border))
+data_x.extend(x[inside])
+data_y.extend(y[inside])
+data_z.extend(z[inside])
+
+# Select the data next to the border of the region
+border = numpy.where((max_z - delta_border <= z) & (z <= max_z))
+databorder_x.extend(x[border])
+databorder_y.extend(y[border])
+databorder_z.extend(z[border])
 
 fig = go.Figure(data=[
     go.Scatter3d(
@@ -35,8 +45,8 @@ fig = go.Figure(data=[
         mode='markers',
         marker=dict(
             size=12,
-            color=data_z,        # set color to an array/list of desired values
-            colorscale='blues',  # choose a colorscale
+            color=data_z,           # set color to an array/list of desired values
+            colorscale='blues',     # choose a colorscale
             opacity=0.03
         )
     ),
@@ -72,8 +82,8 @@ fig = go.Figure(data=[
 fig.update_layout(
     # set axis
     scene = dict(
-        xaxis = dict(range=[0,12],),
-        yaxis = dict(range=[0,12],),
+        xaxis = dict(range=[0,4],),
+        yaxis = dict(range=[0,4],),
         zaxis = dict(range=[0,12],),
         xaxis_title='X AXIS TITLE',
         yaxis_title='Y AXIS TITLE',
